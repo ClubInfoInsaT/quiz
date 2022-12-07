@@ -29,9 +29,9 @@
           text-white
           hover:bg-blue-600
         "
-        @click="login"
+        @click="register"
       >
-        Login
+        Register
       </button>
     </div>
   </div>
@@ -52,8 +52,8 @@ const setPassword = (event: Event) => {
   password.value = (event.target as HTMLInputElement).value;
 };
 
-const login = async () => {
-  const { data, error } = await client.auth.signInWithPassword({
+const register = async () => {
+  const { data, error } = await client.auth.signUp({
     email: email.value,
     password: password.value,
   });
@@ -62,6 +62,6 @@ const login = async () => {
     console.log(error);
   }
 
-  if (data.user) router.push("/home");
+  if (data.user) router.push("/email-verification");
 };
 </script>
