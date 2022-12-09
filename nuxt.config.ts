@@ -14,4 +14,16 @@ export default defineNuxtConfig({
     server: false,
     client: false,
   },
+  tailwindcss: {
+    config: {
+      content: [],
+      theme: {
+        extend: {},
+      },
+      plugins: [require("daisyui")],
+      daisyui: {
+        themes: false,
+      },
+    },
+  },
 });
