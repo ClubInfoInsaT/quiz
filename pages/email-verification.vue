@@ -35,4 +35,8 @@
 
 <script lang="ts" setup>
 import { EnvelopeOpenIcon } from "@heroicons/vue/24/outline";
+
+definePageMeta({
+  layout: "landing",
+});
 </script>
