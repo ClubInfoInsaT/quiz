@@ -51,6 +51,7 @@ defineComponent({
 
 definePageMeta({
   layout: "dashboard",
+  middleware: "auth",
 });
 
 onMounted(() => {
