@@ -1,4 +1,40 @@
 <template>
+  <modal title="Create a new quiz" id="create-quiz-modal">
+    <template #modal-content>
+      <input
+        @input="setQuizName($event)"
+        v-model="quizName"
+        class="w-full py-3 focus:outline-none"
+        placeholder="Enter a name"
+      />
+    </template>
+    <template #modal-actions>
+      <label
+        @click="quizName = ''"
+        for="create-quiz-modal"
+        class="px-4 py-3 rounded-lg font-bold text-red-600 hover:bg-red-100"
+      >
+        Annuler
+      </label>
+      <label
+        v-if="quizName"
+        @click="createQuiz"
+        for="create-quiz-modal"
+        class="
+          px-4
+          py-3
+          rounded-lg
+          text-white
+          font-bold
+          bg-sky-600
+          hover:bg-sky-700
+        "
+      >
+        Valider
+      </label>
+    </template>
+  </modal>
+
   <div class="h-screen">
     <div class="space-y-8 pt-8 pb-12">
       <div class="flex items-center justify-between gap-4 px-8">
@@ -10,7 +46,8 @@
           </p>
         </div>
         <div class="flex gap-3">
-          <button
+          <label
+            for="create-quiz-modal"
             class="
               flex
               items-center
@@ -25,8 +62,8 @@
             "
           >
             <PlusCircleIcon class="h-6 w-6" />
-            <span>New quiz</span>
-          </button>
+            New quiz
+          </label>
         </div>
       </div>
       <section class="px-8">
@@ -62,9 +99,12 @@ onMounted(() => {
   getQuizzes();
 });
 
+const user = useSupabaseUser();
 const supabase = useSupabaseAuthClient();
+const router = useRouter();
 
 const quizzes = ref<Quiz[]>();
+const quizName = ref("");
 
 const getQuizzes = async () => {
   const { data, error } = await supabase.from("quizz").select("*");
@@ -74,5 +114,30 @@ const getQuizzes = async () => {
   }
 
   quizzes.value = data as Quiz[];
+};
+
+const setQuizName = (event: Event) => {
+  quizName.value = (event.target as HTMLInputElement).value;
+};
+
+const createQuiz = async () => {
+  const userID = await user.value?.id;
+  if (userID) {
+    const { data, error } = await supabase
+      .from("quizz")
+      .insert({ name: quizName.value, creator: userID } as never)
+      .select();
+    if (error) {
+      // TODO: Display a toast message
+      console.log(error);
+    }
+    const quizzes = data as Quiz[];
+    if (quizzes) {
+      router.push({
+        path: `/quiz/editor/${quizzes[0].id}`,
+        params: { id: quizzes[0].id },
+      });
+    }
+  }
 };
 </script>

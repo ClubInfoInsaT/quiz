@@ -50,4 +50,8 @@ defineComponent({
     PlusCircleIcon,
   },
 });
+
+definePageMeta({
+  layout: "landing",
+});
 </script>

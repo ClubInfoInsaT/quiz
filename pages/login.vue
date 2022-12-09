@@ -38,6 +38,10 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({
+  layout: "landing",
+});
+
 const client = useSupabaseAuthClient();
 const router = useRouter();
 

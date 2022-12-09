@@ -4,9 +4,8 @@ node_modules
 .nitro
 .cache
 .output
-.env
 dist
 
 
- # Environment variables
-.env
+ # Environment variables for production
+.env.production
