@@ -5,8 +5,13 @@
       <div class="px-8 bg-white xl:fixed">
         <h1 class="text-4xl font-bold">Aperçu du quiz</h1>
       </div>
+      <!-- Loading Content -->
+      <section class="flex justify-center items-center h-screen" v-if="pending">
+        <loading-spinner />
+      </section>
+
       <!-- Content -->
-      <section class="flex flex-col xl:flex-row gap-8">
+      <section class="flex flex-col xl:flex-row gap-8" v-else>
         <!-- Quiz info -->
         <div class="xl:w-1/3 border-r">
           <div class="p-8 xl:sticky xl:top-20">
@@ -120,29 +125,26 @@ definePageMeta({
 
 const supabase = useSupabaseClient();
 const { id } = useRoute().params;
-const quiz = ref<Quiz>();
 
-const fetchQuizInfo = async () => {
+const { data: quiz, pending } = await useLazyAsyncData("quizzes", async () => {
   const { data, error } = await supabase
     .from("quizz")
     .select("*")
     .eq("id", id)
     .single();
-  if (error) {
-    const nuxtError = createError({
-      statusCode: 404,
-      message: "The quiz you are looking for does not exist.",
-      statusMessage: "Quiz not found",
-    });
-    showError(nuxtError);
-  }
-  if (data) {
-    quiz.value = data;
-  }
-};
 
-onMounted(() => {
-  fetchQuizInfo();
+  if (error) {
+    if (error) {
+      const nuxtError = createError({
+        statusCode: 404,
+        message: "The quiz you are looking for does not exist.",
+        statusMessage: "Quiz not found",
+      });
+      showError(nuxtError);
+    }
+  }
+
+  return data as Quiz | null;
 });
 
 const totalDuration = computed(() =>
