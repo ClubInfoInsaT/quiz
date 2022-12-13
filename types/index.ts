@@ -2,7 +2,6 @@ export type Question = {
   question: string;
   propositions: string[];
   answer: string;
-  duration: number;
 };
 
 export type Quiz = {
