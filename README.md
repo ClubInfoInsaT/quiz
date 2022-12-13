@@ -1,36 +1,77 @@
-# Nuxt 3 Minimal Starter
+<h1 align="center">Quiz - Trivial</h1>
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+<div align="center">
 
-## Setup
+![](https://img.shields.io/github/last-commit/ClubInfoINSAT/quiz?color=C9CBFF&logoColor=D9E0EE&labelColor=302D41&style=for-the-badge&logo=git)
+![](https://img.shields.io/github/contributors/ClubInfoINSAT/quiz?color=f5a97f&logoColor=D9E0EE&labelColor=302D41&style=for-the-badge&logo=github)
+![](https://img.shields.io/github/license/ClubInfoINSAT/quiz?color=B5E8E0&logoColor=D9E0EE&labelColor=302D41&style=for-the-badge&logo=gitbook)
 
-Make sure to install the dependencies:
+</div>
 
+## Installation
+
+- Installer le code source sur votre machine
+    ```bash
+    git clone https://github.com/ClubInfoInsaT/quiz
+    ```
+> En supposant que [NodeJS](https://nodejs.dev/en/) est installé
+- Installer les dépendences
+    ```bash
+    cd quiz
+    npm install
+    ```
+- Pour lancer le projet utilisez la commande suivante
+    ```bash
+    npm run dev
+    ```
+- Rendez-vous [http://localhost:3000](http://localhost:3000) pour voir le site
+## Stack
+
+**Frontend:**
+- [Nuxt](https://nuxtjs.com/)
+- [Tailwindcss](https://tailwindcss.com/)
+
+**Backend:**
+- [Supabase](https://supabase.com/)
+
+## Comment contribuer
+
+Toute contribution est la bienvenue. 
+
+<details>
+<summary>Contribuer en tant que développeur</summary>
+
+#### 1. Clone le projet
 ```bash
-# npm
-npm install
+git clone https://github.com/ClubInfoINSAT/quiz
 ```
+#### 2. Créez une nouvelle branche
 
-## Development Server
-
-Start the development server on http://localhost:3000
-
+> Chaque fonctionnalité doit être développée dans sa propre branche puis fusionnée avec la branche principale
 ```bash
-npm run dev
+# Remplace nom-de-la-branche par le nom de ta branche (i.e. la fonctionnalité que vous développez)
+git checkout -b nom-de-la-branche
 ```
+#### 3. Faites vos modifications
 
-## Production
+Tu peux maintenant modifier ce que tu veux pour corriger un bug ou ajoute une fonctionnalité.
 
-Build the application for production:
+> Mais avant de faire quoi que ce soit, merci de te signaler sur notre [Discord](https://discord.gg/9G8cWyK) ! Cela évitera que plusieurs personnes corrigent le même bug ou de commencer à développer une fonctionnalité non voulue.
 
-```bash
-npm run build
-```
+#### 4. Créez une pull request
 
-Locally preview production build:
+Cette étape te permet de demander à ce que tes modifications soient intégrées dans le projet. Pour cela, tu peux te rendre sur la page [pull requests](/pulls) et cliquer sur le bouton `New pull request`.
 
-```bash
-npm run preview
-```
+</details>
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+<details open>
+<summary>Pour les autres</summary>
+
+Vous pouvez nous contacter sur [Discord](https://discord.gg/9G8cWyK) afin de nous proposer des idées, améliorations ou proposer vos services.
+
+</details>
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
