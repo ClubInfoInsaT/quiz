@@ -1,37 +1,53 @@
 <template>
-  <modal title="Create a new quiz" id="create-quiz-modal">
-    <template #modal-content>
-      <input
-        @input="setQuizName($event)"
-        v-model="quizName"
-        class="w-full py-3 focus:outline-none"
-        placeholder="Enter a name"
-      />
+  <modal :is-open="isOpen" :on-close="onClose">
+    <template #title>
+      <h2 class="font-semibold text-xl">Créer un quiz</h2>
     </template>
-    <template #modal-actions>
-      <label
-        @click="quizName = ''"
-        for="create-quiz-modal"
-        class="px-4 py-3 rounded-lg font-bold text-red-600 hover:bg-red-100"
-      >
-        Annuler
-      </label>
-      <label
-        v-if="quizName"
-        @click="createQuiz"
-        for="create-quiz-modal"
+    <template #description>
+      <p class="text-gray-600">Veuillez donner un nom à votre quiz.</p>
+    </template>
+    <template #content>
+      <div class="space-y-2">
+        <label for="quiz-name" class="block font-medium">Nom du quiz</label>
+        <input
+          type="text"
+          id="quiz-name"
+          class="block px-3 py-2 w-full rounded-lg border border-gray-300"
+          placeholder="ex: Mon Quiz"
+          @input="setQuizName"
+        />
+      </div>
+    </template>
+    <template #actions>
+      <button
+        @click="onClose"
         class="
-          px-4
-          py-3
+          w-full
           rounded-lg
-          text-white
-          font-bold
-          bg-sky-600
-          hover:bg-sky-700
+          px-3
+          py-2
+          border border-gray-300
+          hover:bg-gray-100
+          font-semibold
         "
       >
-        Valider
-      </label>
+        Annuler
+      </button>
+      <button
+        @click="onClose"
+        class="
+          w-full
+          rounded-lg
+          px-3
+          py-2
+          bg-sky-500
+          hover:bg-sky-600
+          font-semibold
+          text-white
+        "
+      >
+        Créer
+      </button>
     </template>
   </modal>
 
@@ -46,8 +62,8 @@
           </p>
         </div>
         <div class="flex gap-3">
-          <label
-            for="create-quiz-modal"
+          <button
+            @click="onOpen"
             class="
               flex
               items-center
@@ -63,7 +79,7 @@
           >
             <PlusCircleIcon class="h-6 w-6" />
             New quiz
-          </label>
+          </button>
         </div>
       </div>
       <section class="px-8">
@@ -79,7 +95,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ChevronRightIcon, PlusCircleIcon } from "@heroicons/vue/24/outline";
+import {
+  ChevronRightIcon,
+  PlusCircleIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 import { Quiz } from "~/types";
 
 defineComponent({
@@ -87,7 +107,6 @@ defineComponent({
     ChevronRightIcon,
     PlusCircleIcon,
   },
-  data: () => ({ quizzes: [] }),
 });
 
 definePageMeta({
@@ -105,6 +124,15 @@ const router = useRouter();
 
 const quizzes = ref<Quiz[]>();
 const quizName = ref("");
+
+// Modal state
+const isOpen = ref(false);
+const onOpen = () => {
+  isOpen.value = true;
+};
+const onClose = () => {
+  isOpen.value = false;
+};
 
 const getQuizzes = async () => {
   const { data, error } = await supabase.from("quizz").select("*");
@@ -140,4 +168,9 @@ const createQuiz = async () => {
     }
   }
 };
+
+const quizNameLength = computed(() => quizName.value.length);
+const isQuizNameValid = computed(
+  () => quizNameLength.value <= 50 && quizNameLength.value > 0
+);
 </script>
