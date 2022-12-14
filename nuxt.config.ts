@@ -20,10 +20,7 @@ export default defineNuxtConfig({
       theme: {
         extend: {},
       },
-      plugins: [require("daisyui")],
-      daisyui: {
-        themes: false,
-      },
+      plugins: [],
     },
   },
 });
