@@ -7,15 +7,29 @@
       <p class="text-gray-600">Veuillez donner un nom à votre quiz.</p>
     </template>
     <template #content>
-      <div class="space-y-2">
-        <label for="quiz-name" class="block font-medium">Nom du quiz</label>
-        <input
-          type="text"
-          id="quiz-name"
-          class="block px-3 py-2 w-full rounded-lg border border-gray-300"
-          placeholder="ex: Mon Quiz"
-          @input="setQuizName"
-        />
+      <div class="space-y-4">
+        <div class="space-y-2">
+          <label for="quiz-name" class="block font-medium">Nom du quiz</label>
+          <input
+            type="text"
+            id="quiz-name"
+            class="block px-3 py-2 w-full rounded-lg border border-gray-300"
+            placeholder="ex: Mon Quiz"
+            @input="setQuizName"
+          />
+        </div>
+        <div class="space-y-2">
+          <label for="quiz-description" class="block font-medium">
+            Description (optionnelle)
+          </label>
+          <input
+            type="text"
+            id="quiz-description"
+            class="block px-3 py-2 w-full rounded-lg border border-gray-300"
+            placeholder="Ceci est une description."
+            @input="setQuizDescription"
+          />
+        </div>
       </div>
     </template>
     <template #actions>
@@ -34,7 +48,7 @@
         Annuler
       </button>
       <button
-        @click="onClose"
+        @click="createQuiz"
         class="
           w-full
           rounded-lg
@@ -124,6 +138,7 @@ const router = useRouter();
 
 const quizzes = ref<Quiz[]>();
 const quizName = ref("");
+const quizDescription = ref<string | null>();
 
 // Modal state
 const isOpen = ref(false);
@@ -148,12 +163,20 @@ const setQuizName = (event: Event) => {
   quizName.value = (event.target as HTMLInputElement).value;
 };
 
+const setQuizDescription = (event: Event) => {
+  quizDescription.value = (event.target as HTMLInputElement).value;
+};
+
 const createQuiz = async () => {
   const userID = await user.value?.id;
   if (userID) {
     const { data, error } = await supabase
       .from("quizz")
-      .insert({ name: quizName.value, creator: userID } as never)
+      .insert({
+        name: quizName.value,
+        creator: userID,
+        description: quizDescription.value,
+      } as never)
       .select();
     if (error) {
       // TODO: Display a toast message
@@ -161,6 +184,7 @@ const createQuiz = async () => {
     }
     const quizzes = data as Quiz[];
     if (quizzes) {
+      onClose();
       router.push({
         path: `/quiz/editor/${quizzes[0].id}`,
         params: { id: quizzes[0].id },
@@ -168,9 +192,4 @@ const createQuiz = async () => {
     }
   }
 };
-
-const quizNameLength = computed(() => quizName.value.length);
-const isQuizNameValid = computed(
-  () => quizNameLength.value <= 50 && quizNameLength.value > 0
-);
 </script>
