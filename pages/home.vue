@@ -169,7 +169,7 @@ const setQuizDescription = (event: Event) => {
 
 const createQuiz = async () => {
   const userID = await user.value?.id;
-  if (userID) {
+  if (userID && quizName.value) {
     const { data, error } = await supabase
       .from("quizz")
       .insert({
@@ -177,17 +177,18 @@ const createQuiz = async () => {
         creator: userID,
         description: quizDescription.value,
       } as never)
-      .select();
+      .select()
+      .single();
     if (error) {
       // TODO: Display a toast message
       console.log(error);
     }
-    const quizzes = data as Quiz[];
-    if (quizzes) {
+    const quiz = data as Quiz | null;
+    if (quiz) {
       onClose();
       router.push({
-        path: `/quiz/editor/${quizzes[0].id}`,
-        params: { id: quizzes[0].id },
+        path: `/quiz/editor/${quiz.id}`,
+        params: { id: quiz.id },
       });
     }
   }
